@@ -26,7 +26,7 @@ class SplashMainActivity : AppCompatActivity() {
             binding.splashLogo.animate().alpha(1.0f).duration = 500
         }, 300)
         Handler(Looper.getMainLooper()).postDelayed({
-            intent = Intent(this, HomeActivity::class.java)
+            intent = Intent(this@SplashMainActivity, HomeActivity::class.java)
             startActivity(intent)
         }, 1500)
         /* TODO Get rid of delay when actual work needed*/
