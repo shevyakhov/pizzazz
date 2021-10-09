@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pizzazz">
         <activity
-            android:name=".SplashMainActivity"
+            android:name=".activities.HomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.SplashMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
