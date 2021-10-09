@@ -12,10 +12,9 @@ class EndActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.backToMenu.setOnClickListener {
-            intent = Intent(this@EndActivity,SplashMainActivity::class.java)
+            intent = Intent(this@EndActivity,HomeActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
-    over
 }

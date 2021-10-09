@@ -17,7 +17,7 @@ class HomeActivity : AppCompatActivity() {
             intent = Intent(this@HomeActivity, CartActivity::class.java)
             startActivity(intent)
         }
-        
+
     }
 
 }
