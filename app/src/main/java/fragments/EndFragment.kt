@@ -25,7 +25,7 @@ class EndFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.orderSentBtn.setOnClickListener {
-            stateModel.deleteFragmentLive.postValue(EndFragment())
+            stateModel.deleteFragmentLive.postValue(true)
             stateModel.addFragmentLive.postValue(HomeFragment())
 
 

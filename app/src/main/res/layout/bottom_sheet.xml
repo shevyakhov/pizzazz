@@ -2,25 +2,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragments.HomeFragment"
-    android:orientation="vertical"
     android:background="@color/purple_700"
-    >
+    android:orientation="vertical"
+    tools:context="fragments.HomeFragment">
+
+    <ImageView
+        android:id="@+id/bottomBackground"
+        android:background="#9C9C9C"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <TextView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@color/white"
-        android:text="bottom sheet"
-        android:gravity="center"
         android:layout_gravity="center_horizontal"
-        />
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="bottom sheet" />
+
     <Button
         android:id="@+id/button"
-        android:backgroundTint="@color/mainYellow"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_gravity="center"
+        android:backgroundTint="@color/mainYellow"
         android:text="to cart" />
 
 </FrameLayout>
