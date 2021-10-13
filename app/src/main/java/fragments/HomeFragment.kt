@@ -19,7 +19,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
 
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater)
         return binding.root
@@ -32,6 +32,7 @@ class HomeFragment : Fragment() {
                 .commit()
         }
     }
+
 }
 
 class BottomFragment : BottomSheetDialogFragment() {
@@ -40,7 +41,7 @@ class BottomFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = BottomSheetBinding.inflate(inflater)
         return binding.root
@@ -48,11 +49,15 @@ class BottomFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.bottomBackground.setOnClickListener {
+            dismiss()
+        }
         binding.button.setOnClickListener {
             stateModel.addFragmentLive.postValue(CartFragment())
             dismiss()
         }
 
     }
+
 }
 

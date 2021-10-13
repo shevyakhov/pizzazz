@@ -7,6 +7,6 @@ import androidx.lifecycle.ViewModel
 class StateViewModel : ViewModel() {
 
     val addFragmentLive = MutableLiveData<Fragment>()
-    val deleteFragmentLive = MutableLiveData<Fragment>()
+    val deleteFragmentLive = MutableLiveData<Boolean>()
 
 }

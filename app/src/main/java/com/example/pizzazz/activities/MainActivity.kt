@@ -8,7 +8,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.pizzazz.R
 import com.example.pizzazz.databinding.ActivityMainBinding
-import fragments.SplashFragment
+import fragments.BottomFragment
+import fragments.HomeFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -16,14 +17,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setTheme(R.style.SplashTheme)
         setContentView(binding.root)
-        splashScreen()
         initVm()
+        startMainFrag()
     }
 
-    private fun splashScreen() {
+    private fun startMainFrag() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentHolder, SplashFragment()).commit()
+            .add(R.id.fragmentHolder, HomeFragment()).commit()
     }
 
     private fun openFragment(frag: Fragment) {
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             .add(R.id.fragmentHolder, frag).addToBackStack(null).commit()
     }
 
-    private fun deleteAllFragments(frag: Fragment) {
+    private fun deleteAllFragments() {
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
@@ -41,8 +43,8 @@ class MainActivity : AppCompatActivity() {
         stateVM.addFragmentLive.observe(this, { frag ->
             openFragment(frag)
         })
-        stateVM.deleteFragmentLive.observe(this, { frag ->
-            deleteAllFragments(frag)
+        stateVM.deleteFragmentLive.observe(this, {
+            deleteAllFragments()
         })
     }
 
