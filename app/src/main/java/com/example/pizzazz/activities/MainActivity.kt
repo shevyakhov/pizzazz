@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.pizzazz.R
 import com.example.pizzazz.databinding.ActivityMainBinding
-import fragments.BottomFragment
 import fragments.HomeFragment
 
 class MainActivity : AppCompatActivity() {
@@ -20,10 +19,10 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.SplashTheme)
         setContentView(binding.root)
         initVm()
-        startMainFrag()
+        startMainFragment()
     }
 
-    private fun startMainFrag() {
+    private fun startMainFragment() {
         supportFragmentManager.beginTransaction()
             .add(R.id.fragmentHolder, HomeFragment()).commit()
     }
@@ -39,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initVm() {
         stateVM = ViewModelProvider(this)[StateViewModel::class.java]
-        /*check of ViewModel's changes */
+
         stateVM.addFragmentLive.observe(this, { frag ->
             openFragment(frag)
         })
@@ -47,5 +46,4 @@ class MainActivity : AppCompatActivity() {
             deleteAllFragments()
         })
     }
-
 }

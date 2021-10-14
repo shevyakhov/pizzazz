@@ -17,7 +17,7 @@ class EndFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentEndBinding.inflate(inflater)
         return binding.root
     }
@@ -26,9 +26,6 @@ class EndFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.orderSentBtn.setOnClickListener {
             stateModel.deleteFragmentLive.postValue(true)
-            stateModel.addFragmentLive.postValue(HomeFragment())
-
-
         }
     }
 

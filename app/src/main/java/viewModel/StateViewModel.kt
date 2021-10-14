@@ -8,5 +8,4 @@ class StateViewModel : ViewModel() {
 
     val addFragmentLive = MutableLiveData<Fragment>()
     val deleteFragmentLive = MutableLiveData<Boolean>()
-
 }
