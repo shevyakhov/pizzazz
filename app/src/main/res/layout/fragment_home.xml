@@ -2,17 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragments.HomeFragment"
-    android:orientation="vertical"
     android:background="@color/white"
-    >
+    android:orientation="vertical"
+    tools:context="fragments.HomeFragment">
 
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:text="home fragment" />
+
+<!--    TODO RECYCLER-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
     <Button
         android:id="@+id/btn"
@@ -20,12 +19,12 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:text="open bottom sheet" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        tools:background="@color/design_default_color_error"
         android:layout_gravity="bottom"
-        />
+        tools:background="@color/design_default_color_error" />
 
 </FrameLayout>

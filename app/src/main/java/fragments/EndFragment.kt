@@ -1,18 +1,17 @@
 package fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import com.example.pizzazz.databinding.FragmentEndBinding
-import viewModel.StateViewModel
 
 
 class EndFragment : Fragment() {
+    lateinit var fragmentPasser: OnFragmentPass
     private lateinit var binding: FragmentEndBinding
-    private val stateModel: StateViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,8 +24,18 @@ class EndFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.orderSentBtn.setOnClickListener {
-            stateModel.deleteFragmentLive.postValue(true)
+            deleteFragment()
         }
     }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        fragmentPasser = context as OnFragmentPass
+    }
 
+    private fun passFragment(frag: Fragment) {
+        fragmentPasser.onDataPass(frag)
+    }
+    private fun deleteFragment() {
+        fragmentPasser.onDataDelete()
+    }
 }
