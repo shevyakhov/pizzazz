@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="appPrimaryStyle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/appGrey</item>
+        <item name="font">@font/lato</item>
+    </style>
+    <style name="appSecondStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/appGrey</item>
+        <item name="font">@font/lato</item>
+    </style>
+    <style name="buttonYellow">
+        <item name="android:background">@drawable/btn_shape</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="font">@font/lato</item>
+    </style>
+</resources>

@@ -9,12 +9,18 @@ import com.example.pizzazz.R
 import com.example.pizzazz.databinding.ActivityMainBinding
 import fragments.HomeFragment
 import fragments.OnFragmentPass
+import pizza_logic.Pizza
+import pizza_logic.PizzaEntity
+import pizza_logic.PizzaModel
 
 class MainActivity : AppCompatActivity(), OnFragmentPass{
     private lateinit var binding: ActivityMainBinding
+    private lateinit var model: PizzaModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        model = ViewModelProvider(this)[PizzaModel::class.java]
         setTheme(R.style.SplashTheme)
         setContentView(binding.root)
         startMainFragment()
@@ -32,5 +38,9 @@ class MainActivity : AppCompatActivity(), OnFragmentPass{
 
     override fun onDataDelete() {
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    override fun onPassLiveData(item: Pizza) {
+        model.addPizza(item)
     }
 }
