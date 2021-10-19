@@ -1,20 +1,29 @@
 package fragments
 
+import adapters.MenuAdapter
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.pizzazz.R
-import com.example.pizzazz.databinding.BottomSheetBinding
+import android.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pizzazz.databinding.FragmentHomeBinding
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import pizza_logic.PizzaDatabase
+import pizza_logic.PizzaEntity
+import pizza_logic.PizzaModel
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     lateinit var fragmentPasser: OnFragmentPass
-
+    private val menuAdapter = MenuAdapter()
+    private val pizzaModel: PizzaModel by activityViewModels()
+    private var pizzaDb = PizzaDatabase
+    private var dao = pizzaDb.pizzaDao
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,10 +36,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btn.setOnClickListener {
-            childFragmentManager.beginTransaction().replace(R.id.bottomSheet, BottomFragment())
-                .commit()
-        }
+        bindingInit()
+        sendToAdapter(dao.getAll())
     }
 
     override fun onAttach(context: Context) {
@@ -38,40 +45,37 @@ class HomeFragment : Fragment() {
         fragmentPasser = context as OnFragmentPass
     }
 
-}
-
-class BottomFragment : BottomSheetDialogFragment() {
-    lateinit var fragmentPasser: OnFragmentPass
-    private lateinit var binding: BottomSheetBinding
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        binding = BottomSheetBinding.inflate(inflater)
-        return binding.root
+    private fun sendToAdapter(list: List<PizzaEntity>) {
+        for (i in list.indices) {
+            menuAdapter.addPizza(list[i])
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.bottomBackground.setOnClickListener {
-            dismiss()
+    private fun bindingInit() {
+        binding.apply {
+            menuList.layoutManager =
+                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            menuList.adapter = menuAdapter
         }
         binding.button.setOnClickListener {
             passFragment(CartFragment())
-            dismiss()
         }
+        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                Log.e("text",p0.toString())
+                return false
+            }
 
+            override fun onQueryTextChange(p0: String?): Boolean {
+                Log.e("text",p0.toString())
+                return false
+            }
+        })
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        fragmentPasser = context as OnFragmentPass
-    }
-
     private fun passFragment(frag: Fragment) {
         fragmentPasser.onDataPass(frag)
     }
 
 }
+
 
