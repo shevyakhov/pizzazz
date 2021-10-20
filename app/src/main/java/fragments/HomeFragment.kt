@@ -16,6 +16,8 @@ import com.example.pizzazz.databinding.FragmentHomeBinding
 import pizza_logic.PizzaDatabase
 import pizza_logic.PizzaEntity
 import pizza_logic.PizzaModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -52,6 +54,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun bindingInit() {
+
         binding.apply {
             menuList.layoutManager =
                 LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -60,18 +63,20 @@ class HomeFragment : Fragment() {
         binding.button.setOnClickListener {
             passFragment(CartFragment())
         }
+
         binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
-                Log.e("text",p0.toString())
+
                 return false
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
-                Log.e("text",p0.toString())
+                menuAdapter.filter.filter(p0)
                 return false
             }
         })
     }
+
     private fun passFragment(frag: Fragment) {
         fragmentPasser.onDataPass(frag)
     }

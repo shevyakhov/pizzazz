@@ -48,6 +48,9 @@ class BottomFragment : BottomSheetDialogFragment() {
         binding.btnToCart.setOnClickListener {
             dismiss()
         }
+        binding.swipeBtn.setOnClickListener {
+            dismiss()
+        }
 
     }
 

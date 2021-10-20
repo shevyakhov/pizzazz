@@ -47,7 +47,7 @@
                 android:layout_height="38dp"
                 android:layout_gravity="start"
                 android:layout_marginHorizontal="14dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="25dp"
                 android:paddingTop="5dp"
                 tools:text="pizza name" />
 
@@ -59,7 +59,6 @@
                 android:layout_gravity="start"
                 android:layout_marginHorizontal="14dp"
                 android:ellipsize="end"
-                android:maxLines="3"
                 android:paddingBottom="15dp"
                 tools:text="description" />
         </LinearLayout>
