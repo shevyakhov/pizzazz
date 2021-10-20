@@ -3,21 +3,27 @@ package adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.pizzazz.R
 import com.example.pizzazz.databinding.MenuItemBinding
-import fragments.BottomFragment
+import fragments.DetailsFragment
 import fragments.OnFragmentPass
+import pizza_logic.ListDiffUtil
 import pizza_logic.Pizza
 import pizza_logic.PizzaEntity
 
 
-class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>() {
-    private val menuList = ArrayList<Pizza>()
-    lateinit var fragmentPasser: OnFragmentPass
+class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
+    private var menuList = ArrayList<PizzaEntity>()
+    private var fullMenuList = ArrayList<PizzaEntity>()
+    private lateinit var fragmentPasser: OnFragmentPass
+
     class MenuHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val binding = MenuItemBinding.bind(v)
         val context = v.context
@@ -28,7 +34,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>() {
             Glide
                 .with(context)
                 .load(menu.imageUrl)
-                .apply(RequestOptions.bitmapTransform( RoundedCorners(50)))
+                .apply(RequestOptions.bitmapTransform(RoundedCorners(50)))
                 .into(cardImage)
         }
     }
@@ -43,7 +49,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>() {
         holder.bind(menuList[position])
         holder.itemView.setOnClickListener {
             fragmentPasser.onPassLiveData(menuList[position])
-            fragmentPasser.onDataPass(BottomFragment())
+            fragmentPasser.onDataPass(DetailsFragment())
         }
     }
 
@@ -52,7 +58,41 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>() {
     }
 
     fun addPizza(e: PizzaEntity) {
-        menuList.add(e.id -1, Pizza(e.name, e.price, e.imageUrl, e.description))
-        notifyDataSetChanged()
+        menuList.add(e.id - 1, e)
+        fullMenuList.add(e.id - 1, e)
+    }
+
+    fun changeDataUtil(newList: List<PizzaEntity>) {
+        val diffUtil = ListDiffUtil(menuList, newList)
+        val results = DiffUtil.calculateDiff(diffUtil)
+        menuList = newList as ArrayList<PizzaEntity>
+        results.dispatchUpdatesTo(this)
+    }
+
+    override fun getFilter(): Filter {
+        return filtered
+    }
+
+    private val filtered: Filter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence): FilterResults {
+            val filteredList: MutableList<PizzaEntity> = ArrayList()
+            if (constraint.isEmpty()) {
+                filteredList.addAll(fullMenuList)
+            } else {
+                val filterPattern = constraint.toString().lowercase().trim { it <= ' ' }
+                for (item in fullMenuList) {
+                    if (item.name.lowercase().contains(filterPattern)) {
+                        filteredList.add(item)
+                    }
+                }
+            }
+            val results = FilterResults()
+            results.values = filteredList
+            return results
+        }
+
+        override fun publishResults(constraint: CharSequence, results: FilterResults) {
+            changeDataUtil(results.values as List<PizzaEntity>)
+        }
     }
 }
