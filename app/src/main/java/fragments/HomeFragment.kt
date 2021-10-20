@@ -3,7 +3,6 @@ package fragments
 import adapters.MenuAdapter
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +12,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pizzazz.databinding.FragmentHomeBinding
+import pizza_logic.Pizza
 import pizza_logic.PizzaDatabase
 import pizza_logic.PizzaEntity
 import pizza_logic.PizzaModel
-import java.util.*
-import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    lateinit var fragmentPasser: OnFragmentPass
+    private lateinit var fragmentPasser: OnFragmentPass
     private val menuAdapter = MenuAdapter()
     private val pizzaModel: PizzaModel by activityViewModels()
     private var pizzaDb = PizzaDatabase
@@ -40,6 +38,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bindingInit()
         sendToAdapter(dao.getAll())
+        subscribeOnVm()
     }
 
     override fun onAttach(context: Context) {
@@ -60,7 +59,7 @@ class HomeFragment : Fragment() {
                 LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             menuList.adapter = menuAdapter
         }
-        binding.button.setOnClickListener {
+        binding.checkout.setOnClickListener {
             passFragment(CartFragment())
         }
 
@@ -75,12 +74,31 @@ class HomeFragment : Fragment() {
                 return false
             }
         })
+
     }
 
     private fun passFragment(frag: Fragment) {
         fragmentPasser.onDataPass(frag)
     }
-
+    private fun subscribeOnVm(){
+        pizzaModel.cartLive.observe(viewLifecycleOwner, { cart ->
+            changeCartBtn(cart)
+        })
+    }
+    private fun changeCartBtn(cart:ArrayList<Pizza>){
+        var sum = 0.0
+        for (i in cart.indices){
+            sum+=cart[i].price
+        }
+        if (sum > 0) {
+            binding.checkout.text = sum.toString()
+            binding.checkout.visibility = View.VISIBLE
+        }
+        else{
+            binding.checkout.text = ""
+            binding.checkout.visibility = View.INVISIBLE
+        }
+    }
 }
 
 

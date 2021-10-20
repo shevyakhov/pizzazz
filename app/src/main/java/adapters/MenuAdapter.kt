@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.pizzazz.R
 import com.example.pizzazz.databinding.MenuItemBinding
-import fragments.BottomFragment
+import fragments.DetailsFragment
 import fragments.OnFragmentPass
 import pizza_logic.ListDiffUtil
 import pizza_logic.Pizza
@@ -22,7 +22,7 @@ import pizza_logic.PizzaEntity
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
     private var menuList = ArrayList<PizzaEntity>()
     private var fullMenuList = ArrayList<PizzaEntity>()
-    lateinit var fragmentPasser: OnFragmentPass
+    private lateinit var fragmentPasser: OnFragmentPass
 
     class MenuHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val binding = MenuItemBinding.bind(v)
@@ -49,7 +49,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
         holder.bind(menuList[position])
         holder.itemView.setOnClickListener {
             fragmentPasser.onPassLiveData(menuList[position])
-            fragmentPasser.onDataPass(BottomFragment())
+            fragmentPasser.onDataPass(DetailsFragment())
         }
     }
 

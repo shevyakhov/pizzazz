@@ -1,8 +1,6 @@
 package pizza_logic
 
-import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
-import kotlin.math.log
 
 class ListDiffUtil(
     private val oldList: List<PizzaEntity>,
@@ -18,12 +16,11 @@ class ListDiffUtil(
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        Log.e("positions", "$oldItemPosition $newItemPosition")
         return oldList[oldItemPosition].name == newList[newItemPosition].name
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return when{
+        return when {
             oldList[oldItemPosition].id != newList[newItemPosition].id -> {
                 false
             }

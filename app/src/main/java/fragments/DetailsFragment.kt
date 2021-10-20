@@ -2,7 +2,6 @@ package fragments
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,21 +9,20 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.example.pizzazz.R
-import com.example.pizzazz.databinding.BottomSheetBinding
+import com.example.pizzazz.databinding.FragmentDetailsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import pizza_logic.PizzaModel
 
-class BottomFragment : BottomSheetDialogFragment() {
-    lateinit var fragmentPasser: OnFragmentPass
-    private lateinit var binding: BottomSheetBinding
+class DetailsFragment : BottomSheetDialogFragment() {
+    private lateinit var fragmentPasser: OnFragmentPass
+    private lateinit var binding: FragmentDetailsBinding
     private val pizzaModel: PizzaModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BottomSheetBinding.inflate(inflater)
+        binding = FragmentDetailsBinding.inflate(inflater)
         return binding.root
     }
 
@@ -46,6 +44,10 @@ class BottomFragment : BottomSheetDialogFragment() {
         binding.PizzaName.text = pizza?.name
         binding.btnToCart.text = pizza?.price.toString()
         binding.btnToCart.setOnClickListener {
+
+            if (pizza != null) {
+                pizzaModel.addToCart(pizza)
+            }
             dismiss()
         }
         binding.swipeBtn.setOnClickListener {
@@ -57,10 +59,6 @@ class BottomFragment : BottomSheetDialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         fragmentPasser = context as OnFragmentPass
-    }
-
-    private fun passFragment(frag: Fragment) {
-        fragmentPasser.onDataPass(frag)
     }
 
 }
