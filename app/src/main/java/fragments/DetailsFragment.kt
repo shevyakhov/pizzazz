@@ -11,6 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.pizzazz.databinding.FragmentDetailsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import pizza_logic.OnFragmentPass
 import pizza_logic.PizzaModel
 
 class DetailsFragment : BottomSheetDialogFragment() {
@@ -48,10 +49,10 @@ class DetailsFragment : BottomSheetDialogFragment() {
             if (pizza != null) {
                 pizzaModel.addToCart(pizza)
             }
-            dismiss()
+            fragmentPasser.onPopBackStack()
         }
         binding.swipeBtn.setOnClickListener {
-            dismiss()
+            fragmentPasser.onPopBackStack()
         }
 
     }

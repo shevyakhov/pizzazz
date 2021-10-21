@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.pizzazz.databinding.FragmentEndBinding
+import pizza_logic.OnFragmentPass
 
 
 class EndFragment : Fragment() {

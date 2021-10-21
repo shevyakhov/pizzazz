@@ -1,6 +1,6 @@
 package fragments
 
-import adapters.MenuAdapter
+import pizza_logic.MenuAdapter
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,18 +12,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pizzazz.databinding.FragmentHomeBinding
-import pizza_logic.Pizza
-import pizza_logic.PizzaDatabase
-import pizza_logic.PizzaEntity
-import pizza_logic.PizzaModel
+import pizza_logic.*
+
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var fragmentPasser: OnFragmentPass
+    private lateinit var database: PizzaApi
     private val menuAdapter = MenuAdapter()
     private val pizzaModel: PizzaModel by activityViewModels()
-    private var pizzaDb = PizzaDatabase
-    private var dao = pizzaDb.pizzaDao
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,13 +35,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindingInit()
-        sendToAdapter(dao.getAll())
+        sendToAdapter(getDbData().getAll())
         subscribeOnVm()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         fragmentPasser = context as OnFragmentPass
+        database = context as PizzaApi
     }
 
     private fun sendToAdapter(list: List<PizzaEntity>) {
@@ -99,6 +98,12 @@ class HomeFragment : Fragment() {
             binding.checkout.visibility = View.INVISIBLE
         }
     }
+
+    private fun getDbData(): PizzaDao {
+        return database.getDataFromDb()
+    }
+
+
 }
 
 

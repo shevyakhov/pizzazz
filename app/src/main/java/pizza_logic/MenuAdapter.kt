@@ -1,4 +1,4 @@
-package adapters
+package pizza_logic
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +13,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.pizzazz.R
 import com.example.pizzazz.databinding.MenuItemBinding
 import fragments.DetailsFragment
-import fragments.OnFragmentPass
-import pizza_logic.ListDiffUtil
-import pizza_logic.Pizza
-import pizza_logic.PizzaEntity
+import android.app.Activity
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
 
 
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
@@ -48,8 +47,11 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
     override fun onBindViewHolder(holder: MenuHolder, position: Int) {
         holder.bind(menuList[position])
         holder.itemView.setOnClickListener {
+
             fragmentPasser.onPassLiveData(menuList[position])
             fragmentPasser.onDataPass(DetailsFragment())
+            hideKeyboard(holder.context)
+
         }
     }
 
@@ -94,5 +96,12 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
         override fun publishResults(constraint: CharSequence, results: FilterResults) {
             changeDataUtil(results.values as List<PizzaEntity>)
         }
+    }
+    fun hideKeyboard(ctx: Context) {
+        val inputManager: InputMethodManager = ctx
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        // check if no view has focus:
+        val v = (ctx as Activity).currentFocus ?: return
+        inputManager.hideSoftInputFromWindow(v.windowToken, 0)
     }
 }
