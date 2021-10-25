@@ -96,8 +96,9 @@ class HomeFragment : Fragment() {
         for (i in cart.indices){
             sum+=cart[i].price
         }
-        if (sum > 0) {
-            binding.checkout.text = "$sum ₽"
+        val total = sum.toInt()
+        if (total > 0) {
+            binding.checkout.text = "$total ₽"
             binding.checkout.visibility = View.VISIBLE
         }
         else{

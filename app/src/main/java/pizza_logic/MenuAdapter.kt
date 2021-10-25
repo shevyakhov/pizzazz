@@ -29,7 +29,8 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
         fun bind(menu: Pizza) = with(binding) {
             cardPizzaName.text = menu.name
             cardDescription.text = menu.description
-            cardPrice.text = menu.price.toString()
+            val price = menu.price.toInt()
+            cardPrice.text = "$price ₽"
             Glide
                 .with(context)
                 .load(menu.imageUrl)

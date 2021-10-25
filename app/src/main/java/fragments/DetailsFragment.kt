@@ -50,7 +50,8 @@ class DetailsFragment : BottomSheetDialogFragment() {
         }
         binding.Description.text = pizza.description
         binding.PizzaName.text = pizza.name
-        binding.btnToCart.text = pizza.price.toString()
+        val price = pizza.price.toInt()
+        binding.btnToCart.text = "$price ₽"
         binding.btnToCart.setOnClickListener {
             pizzaModel.addToCart(pizza)
             dismiss()
