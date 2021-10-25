@@ -1,15 +1,18 @@
 package fragments
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.widget.FrameLayout
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.pizzazz.databinding.FragmentDetailsBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import pizza_logic.OnFragmentPass
 import pizza_logic.PizzaModel
@@ -29,7 +32,9 @@ class DetailsFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val pizza = pizzaModel.pizzaLive.value
+        /*val pizza = pizzaModel.pizzaLive.value*/
+        val pizza = pizzaModel.pizzaData
+
 
         binding.bottomImage.setOnClickListener {
 
@@ -45,15 +50,10 @@ class DetailsFragment : BottomSheetDialogFragment() {
         binding.PizzaName.text = pizza?.name
         binding.btnToCart.text = pizza?.price.toString()
         binding.btnToCart.setOnClickListener {
+            pizzaModel.addToCartRx(pizza)
+            dismiss()
+        }
 
-            if (pizza != null) {
-                pizzaModel.addToCart(pizza)
-            }
-            fragmentPasser.onPopBackStack()
-        }
-        binding.swipeBtn.setOnClickListener {
-            fragmentPasser.onPopBackStack()
-        }
 
     }
 
@@ -62,4 +62,17 @@ class DetailsFragment : BottomSheetDialogFragment() {
         fragmentPasser = context as OnFragmentPass
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val bottomSheetDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        bottomSheetDialog.setOnShowListener {
+            val bottomSheet = bottomSheetDialog
+                .findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+            if (bottomSheet != null) {
+                val behavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(bottomSheet)
+                behavior.isDraggable = true
+            }
+        }
+        return bottomSheetDialog
+    }
 }
+

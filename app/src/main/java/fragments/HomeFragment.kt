@@ -3,15 +3,18 @@ package fragments
 import pizza_logic.MenuAdapter
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pizzazz.databinding.FragmentHomeBinding
+import io.reactivex.rxjava3.core.Observable
 import pizza_logic.*
 
 
@@ -80,9 +83,15 @@ class HomeFragment : Fragment() {
         fragmentPasser.onDataPass(frag)
     }
     private fun subscribeOnVm(){
-        pizzaModel.cartLive.observe(viewLifecycleOwner, { cart ->
+        pizzaModel.observableCart.subscribe{
+            Log.e("it", it.toString())
+            if (it != null) {
+                changeCartBtn(it)
+            }
+        }
+        /*pizzaModel.cartLive.observe(viewLifecycleOwner, { cart ->
             changeCartBtn(cart)
-        })
+        })*/
     }
     private fun changeCartBtn(cart:ArrayList<Pizza>){
         var sum = 0.0
@@ -90,7 +99,7 @@ class HomeFragment : Fragment() {
             sum+=cart[i].price
         }
         if (sum > 0) {
-            binding.checkout.text = sum.toString()
+            binding.checkout.text = "$sum ₽"
             binding.checkout.visibility = View.VISIBLE
         }
         else{

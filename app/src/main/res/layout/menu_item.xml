@@ -7,9 +7,9 @@
 
     <!--TODO FONTS-->
     <androidx.cardview.widget.CardView
-        android:layout_width="310dp"
+        android:layout_width="match_parent"
         android:layout_height="210dp"
-        android:layout_marginHorizontal="40dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="20dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="20dp">

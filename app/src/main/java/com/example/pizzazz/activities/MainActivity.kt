@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.pizzazz.R
 import com.example.pizzazz.databinding.ActivityMainBinding
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import fragments.DetailsFragment
 import fragments.HomeFragment
 import pizza_logic.OnFragmentPass
 import pizza_logic.PizzaApi
@@ -40,6 +42,14 @@ class MainActivity : AppCompatActivity(), OnFragmentPass, PizzaApi {
 
     override fun onPassLiveData(item: Pizza) {
         model.addPizza(item)
+    }
+
+    override fun onPassLiveDataRx(item: Pizza) {
+        model.addRxPizza(item)
+    }
+
+    override fun onDialog(fragment: BottomSheetDialogFragment) {
+        fragment.show(supportFragmentManager,"TAG")
     }
 
     override fun onPopBackStack() {

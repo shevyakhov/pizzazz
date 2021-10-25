@@ -20,7 +20,7 @@ import android.view.inputmethod.InputMethodManager
 
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
     private var menuList = ArrayList<PizzaEntity>()
-    private var fullMenuList = ArrayList<PizzaEntity>()
+    private val fullMenuList = ArrayList<PizzaEntity>()
     private lateinit var fragmentPasser: OnFragmentPass
 
     class MenuHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -47,11 +47,11 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
     override fun onBindViewHolder(holder: MenuHolder, position: Int) {
         holder.bind(menuList[position])
         holder.itemView.setOnClickListener {
-
-            fragmentPasser.onPassLiveData(menuList[position])
-            fragmentPasser.onDataPass(DetailsFragment())
+            /*TODO*/
+            /*fragmentPasser.onPassLiveData(menuList[position])*/
+            fragmentPasser.onPassLiveDataRx(menuList[position])
+            fragmentPasser.onDialog(DetailsFragment())
             hideKeyboard(holder.context)
-
         }
     }
 
@@ -97,7 +97,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
             changeDataUtil(results.values as List<PizzaEntity>)
         }
     }
-    fun hideKeyboard(ctx: Context) {
+    private fun hideKeyboard(ctx: Context) {
         val inputManager: InputMethodManager = ctx
             .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         // check if no view has focus:
