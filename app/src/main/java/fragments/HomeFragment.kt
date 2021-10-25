@@ -9,12 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pizzazz.databinding.FragmentHomeBinding
-import io.reactivex.rxjava3.core.Observable
 import pizza_logic.*
 
 
@@ -80,7 +78,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun passFragment(frag: Fragment) {
-        fragmentPasser.onDataPass(frag)
+        fragmentPasser.onFragmentPass(frag)
     }
     private fun subscribeOnVm(){
         pizzaModel.observableCart.subscribe{

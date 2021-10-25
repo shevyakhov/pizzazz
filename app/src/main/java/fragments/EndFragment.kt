@@ -34,7 +34,7 @@ class EndFragment : Fragment() {
     }
 
     private fun passFragment(frag: Fragment) {
-        fragmentPasser.onDataPass(frag)
+        fragmentPasser.onFragmentPass(frag)
     }
     private fun deleteFragment() {
         fragmentPasser.onDataDelete()

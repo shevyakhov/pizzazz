@@ -3,8 +3,9 @@ package fragments
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
@@ -32,25 +33,26 @@ class DetailsFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /*val pizza = pizzaModel.pizzaLive.value*/
-        val pizza = pizzaModel.pizzaData
+
+        val pizza = pizzaModel.getPizzaData()
 
 
         binding.bottomImage.setOnClickListener {
-
+            fragmentPasser.onFragmentPass(PreviewFragment())
+            dismiss()
         }
         context?.let {
             Glide
                 .with(it)
-                .load(pizza?.imageUrl)
+                .load(pizza.imageUrl)
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(50)))
                 .into(binding.bottomImage)
         }
-        binding.Description.text = pizza?.description
-        binding.PizzaName.text = pizza?.name
-        binding.btnToCart.text = pizza?.price.toString()
+        binding.Description.text = pizza.description
+        binding.PizzaName.text = pizza.name
+        binding.btnToCart.text = pizza.price.toString()
         binding.btnToCart.setOnClickListener {
-            pizzaModel.addToCartRx(pizza)
+            pizzaModel.addToCart(pizza)
             dismiss()
         }
 

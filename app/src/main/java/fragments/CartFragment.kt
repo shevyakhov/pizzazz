@@ -32,6 +32,6 @@ class CartFragment : Fragment() {
         fragmentPasser = context as OnFragmentPass
     }
     private fun passFragment(frag: Fragment) {
-        fragmentPasser.onDataPass(frag)
+        fragmentPasser.onFragmentPass(frag)
     }
 }

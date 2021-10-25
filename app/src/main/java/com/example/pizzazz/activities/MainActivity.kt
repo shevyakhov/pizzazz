@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), OnFragmentPass, PizzaApi {
             .add(R.id.fragmentHolder, HomeFragment()).commit()
     }
 
-    override fun onDataPass(fragment: Fragment) {
+    override fun onFragmentPass(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .add(R.id.fragmentHolder, fragment).addToBackStack(null).commit()
     }
@@ -40,12 +40,8 @@ class MainActivity : AppCompatActivity(), OnFragmentPass, PizzaApi {
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
-    override fun onPassLiveData(item: Pizza) {
+    override fun onDataPass(item: Pizza) {
         model.addPizza(item)
-    }
-
-    override fun onPassLiveDataRx(item: Pizza) {
-        model.addRxPizza(item)
     }
 
     override fun onDialog(fragment: BottomSheetDialogFragment) {
