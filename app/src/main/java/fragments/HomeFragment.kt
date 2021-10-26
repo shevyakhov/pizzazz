@@ -13,13 +13,25 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pizzazz.databinding.FragmentHomeBinding
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import okhttp3.OkHttpClient
+import okhttp3.internal.notify
+import okhttp3.logging.HttpLoggingInterceptor
 import pizza_logic.*
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var fragmentPasser: OnFragmentPass
-    private lateinit var database: PizzaApi
+    private lateinit var pizzaApi: PizzaApi
+    private val compositeDisposable = CompositeDisposable()
     private val menuAdapter = MenuAdapter()
     private val pizzaModel: PizzaModel by activityViewModels()
 
@@ -35,15 +47,44 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        configureRetrofit()
+        getPizza()
         bindingInit()
-        sendToAdapter(getDbData().getAll())
         subscribeOnVm()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         fragmentPasser = context as OnFragmentPass
-        database = context as PizzaApi
+    }
+
+    private fun configureRetrofit() {
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://springboot-kotlin-demo.herokuapp.com/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .build()
+        pizzaApi = retrofit.create(PizzaApi::class.java)
+    }
+
+    private fun getPizza() {
+        compositeDisposable.add(
+            pizzaApi.retrievePizzas()
+                .toObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe({
+                    sendToAdapter(it as List<PizzaEntity>)
+                    menuAdapter.notifyDataSetChanged()
+                }, {
+                    Log.e("onError", "error")
+                })
+        )
     }
 
     private fun sendToAdapter(list: List<PizzaEntity>) {
@@ -53,12 +94,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun bindingInit() {
-
         binding.apply {
             menuList.layoutManager =
                 LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             menuList.adapter = menuAdapter
         }
+
         binding.checkout.setOnClickListener {
             passFragment(CartFragment())
         }
@@ -80,37 +121,36 @@ class HomeFragment : Fragment() {
     private fun passFragment(frag: Fragment) {
         fragmentPasser.onFragmentPass(frag)
     }
-    private fun subscribeOnVm(){
-        pizzaModel.observableCart.subscribe{
-            Log.e("it", it.toString())
+
+    private fun subscribeOnVm() {
+        pizzaModel.observableCart.subscribe {
             if (it != null) {
                 changeCartBtn(it)
             }
         }
-        /*pizzaModel.cartLive.observe(viewLifecycleOwner, { cart ->
-            changeCartBtn(cart)
-        })*/
+
     }
-    private fun changeCartBtn(cart:ArrayList<Pizza>){
+
+
+    private fun changeCartBtn(cart: ArrayList<PizzaEntity>) {
         var sum = 0.0
-        for (i in cart.indices){
-            sum+=cart[i].price
+        for (i in cart.indices) {
+            sum += cart[i].price
         }
         val total = sum.toInt()
         if (total > 0) {
             binding.checkout.text = "$total ₽"
             binding.checkout.visibility = View.VISIBLE
-        }
-        else{
+        } else {
             binding.checkout.text = ""
             binding.checkout.visibility = View.INVISIBLE
         }
     }
 
-    private fun getDbData(): PizzaDao {
-        return database.getDataFromDb()
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
     }
-
 
 }
 

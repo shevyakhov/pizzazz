@@ -42,7 +42,7 @@ class PreviewFragment : Fragment() {
         context?.let {
             Glide
                 .with(it)
-                .load(pizza.imageUrl)
+                .load(pizza.imageUrls[0])
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(50)))
                 .into(binding.imagePreview)
         }

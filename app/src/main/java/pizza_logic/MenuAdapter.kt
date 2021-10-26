@@ -15,6 +15,7 @@ import com.example.pizzazz.databinding.MenuItemBinding
 import fragments.DetailsFragment
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 
 
@@ -26,14 +27,14 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
     class MenuHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val binding = MenuItemBinding.bind(v)
         val context = v.context
-        fun bind(menu: Pizza) = with(binding) {
+        fun bind(menu: PizzaEntity) = with(binding) {
             cardPizzaName.text = menu.name
             cardDescription.text = menu.description
             val price = menu.price.toInt()
             cardPrice.text = "$price ₽"
             Glide
                 .with(context)
-                .load(menu.imageUrl)
+                .load(menu.imageUrls[0])
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(50)))
                 .into(cardImage)
         }
@@ -59,6 +60,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
     }
 
     fun addPizza(e: PizzaEntity) {
+        Log.e("",e.toString())
         menuList.add(e.id - 1, e)
         fullMenuList.add(e.id - 1, e)
     }
@@ -84,6 +86,7 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
                 for (item in fullMenuList) {
                     if (item.name.lowercase().contains(filterPattern)) {
                         filteredList.add(item)
+
                     }
                 }
             }
@@ -103,4 +106,5 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
         val v = (ctx as Activity).currentFocus ?: return
         inputManager.hideSoftInputFromWindow(v.windowToken, 0)
     }
+
 }

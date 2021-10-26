@@ -30,7 +30,7 @@ class DetailsFragment : BottomSheetDialogFragment() {
         binding = FragmentDetailsBinding.inflate(inflater)
         return binding.root
     }
-
+    /*TODO STICKY BUTTON*/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,7 +44,7 @@ class DetailsFragment : BottomSheetDialogFragment() {
         context?.let {
             Glide
                 .with(it)
-                .load(pizza.imageUrl)
+                .load(pizza.imageUrls[0])
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(50)))
                 .into(binding.bottomImage)
         }

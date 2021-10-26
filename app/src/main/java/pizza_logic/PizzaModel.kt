@@ -7,26 +7,26 @@ import io.reactivex.rxjava3.subjects.Subject
 class PizzaModel  : ViewModel() {
 
     private var pizzaData = Pizza()
-    private var cartData= ArrayList<Pizza>()
-    private fun Pizza(): Pizza {
-        return Pizza("",0.0,"","")
+    private var cartData= ArrayList<PizzaEntity>()
+    private fun Pizza(): PizzaEntity {
+        return PizzaEntity(-1,"",0.0, listOf(""),"")
     }
 
 
 
-    val observableCart: Subject<ArrayList<Pizza>> = PublishSubject.create()
-    fun addPizza(item:Pizza){
+    val observableCart: Subject<ArrayList<PizzaEntity>> = PublishSubject.create()
+    fun addPizza(item:PizzaEntity){
         pizzaData = item
     }
 
-    fun addToCart(item:Pizza){
-        var cart = ArrayList<Pizza>()
+    fun addToCart(item:PizzaEntity){
+        var cart = ArrayList<PizzaEntity>()
         cart = cartData
         cart.add(item)
         cartData = cart
         observableCart.onNext(cartData)
     }
-    fun getPizzaData(): Pizza {
+    fun getPizzaData(): PizzaEntity {
         return pizzaData
     }
 }

@@ -10,11 +10,18 @@ import com.example.pizzazz.databinding.ActivityMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import fragments.DetailsFragment
 import fragments.HomeFragment
+import io.reactivex.rxjava3.core.Single
 import pizza_logic.OnFragmentPass
 import pizza_logic.PizzaApi
 import pizza_logic.*
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
-class MainActivity : AppCompatActivity(), OnFragmentPass, PizzaApi {
+
+class MainActivity : AppCompatActivity(), OnFragmentPass {
     private lateinit var binding: ActivityMainBinding
     private lateinit var model: PizzaModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,21 +47,16 @@ class MainActivity : AppCompatActivity(), OnFragmentPass, PizzaApi {
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
-    override fun onDataPass(item: Pizza) {
+    override fun onDataPass(item: PizzaEntity) {
         model.addPizza(item)
     }
 
     override fun onDialog(fragment: BottomSheetDialogFragment) {
-        fragment.show(supportFragmentManager,"TAG")
+        fragment.show(supportFragmentManager, "TAG")
     }
 
     override fun onPopBackStack() {
         supportFragmentManager.popBackStack()
-    }
-
-    override fun getDataFromDb(): PizzaDao {
-        val pizzaDb = PizzaDatabase
-        return pizzaDb.pizzaDao
     }
 
 }
