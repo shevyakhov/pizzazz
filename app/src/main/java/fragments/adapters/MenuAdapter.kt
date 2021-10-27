@@ -1,4 +1,4 @@
-package pizza_logic
+package fragments.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +17,9 @@ import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import pizza_logic.ListDiffUtil
+import pizza_logic.OnFragmentPass
+import pizza_logic.PizzaEntity
 
 
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
