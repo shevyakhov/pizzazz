@@ -53,7 +53,8 @@ class PreviewFragment : Fragment() {
     }
 
     private fun initBinding() {
-        val pizza = pizzaModel.getPizzaData()
+        val itemId = pizzaModel.getPizzaData()
+        val pizza = pizzaModel.getPizzaList()[itemId]
         sliderAdapter.initList(pizza.imageUrls as ArrayList<String>)
         binding.viewPager.adapter = sliderAdapter
 

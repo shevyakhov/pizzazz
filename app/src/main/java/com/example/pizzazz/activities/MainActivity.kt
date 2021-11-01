@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), OnFragmentPass {
         supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 
-    override fun onDataPass(item: PizzaEntity) {
+    override fun onDataPass(item: Int) {
         model.addPizza(item)
     }
 

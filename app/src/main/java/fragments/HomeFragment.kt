@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pizzazz.R
 import com.example.pizzazz.databinding.FragmentHomeBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -45,7 +46,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        configureRetrofit()
         getPizza()
         bindingInit()
         subscribeOnVm()
@@ -56,39 +56,12 @@ class HomeFragment : Fragment() {
         fragmentPasser = context as OnFragmentPass
     }
 
-    private fun configureRetrofit() {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
-            .build()
-        val retrofit = Retrofit.Builder()
-                .baseUrl("https://springboot-kotlin-demo.herokuapp.com/")
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .build()
-        pizzaApi = retrofit.create(PizzaApi::class.java)
-    }
 
     private fun getPizza() {
-        compositeDisposable.add(
-            pizzaApi.retrievePizzas()
-                .toObservable()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe({
-                    sendToAdapter(it as List<PizzaEntity>)
-                    menuAdapter.notifyDataSetChanged()
-                }, {
-                    Log.e("onError", "error")
-                })
-        )
-    }
+        val retrofit = RetrofitInstance(getString(R.string.baseUrl))
+        retrofit.configureRetrofit()
+        pizzaModel.getPizza(retrofit.pizzaApi)
 
-    private fun sendToAdapter(list: List<PizzaEntity>) {
-        for (i in list.indices) {
-            menuAdapter.addPizza(list[i])
-        }
     }
 
     private fun bindingInit() {
@@ -125,6 +98,11 @@ class HomeFragment : Fragment() {
             if (it != null) {
                 changeCartBtn(it)
             }
+        }
+
+        pizzaModel.observablePizzaList.subscribe {
+            menuAdapter.addPizza(it.last())
+            menuAdapter.notifyItemChanged(menuAdapter.itemCount - 1)
         }
 
     }

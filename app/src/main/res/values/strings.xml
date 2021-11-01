@@ -3,4 +3,6 @@
 
     <string name="hello_blank_fragment">Home fragment</string>
     <string name="search">Search</string>
+    <string name="menu">menu</string>
+    <string name="baseUrl">https://springboot-kotlin-demo.herokuapp.com/</string>
 </resources>

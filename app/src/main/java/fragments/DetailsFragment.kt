@@ -33,9 +33,8 @@ class DetailsFragment : BottomSheetDialogFragment() {
     /*TODO STICKY BUTTON*/
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val pizza = pizzaModel.getPizzaData()
-
+        val itemId = pizzaModel.getPizzaData()
+        val pizza = pizzaModel.getPizzaList()[itemId]
 
         binding.bottomImage.setOnClickListener {
             fragmentPasser.onFragmentPass(PreviewFragment())

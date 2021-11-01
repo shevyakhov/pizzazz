@@ -65,20 +65,15 @@
                 android:ellipsize="end"
                 android:paddingBottom="15dp"
                 tools:text="description" />
-            <androidx.cardview.widget.CardView
 
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_gravity="bottom"
-                android:backgroundTint="@color/white"
-                app:cardCornerRadius="25dp">
 
-                <Button
+                 <Button
                     android:drawableLeft="@drawable/add_text"
                     android:id="@+id/btnToCart"
                     android:layout_width="310dp"
                     android:textAllCaps="false"
                     android:textStyle="bold"
+                     android:layout_marginTop="20dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
                     tools:text="price"
@@ -87,7 +82,7 @@
                     app:backgroundTint="@null"
                     tools:ignore="RtlCompat" />
 
-            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

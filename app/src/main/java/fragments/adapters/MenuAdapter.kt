@@ -52,7 +52,8 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
     override fun onBindViewHolder(holder: MenuHolder, position: Int) {
         holder.bind(menuList[position])
         holder.itemView.setOnClickListener {
-            fragmentPasser.onDataPass(menuList[position])
+           /* fragmentPasser.onDataPass(menuList[position])*/
+            fragmentPasser.onDataPass(position)
             fragmentPasser.onDialog(DetailsFragment())
             hideKeyboard(holder.context)
         }
