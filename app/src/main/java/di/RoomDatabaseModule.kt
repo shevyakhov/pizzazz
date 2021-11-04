@@ -14,8 +14,9 @@ class RoomDatabaseModule(application: Application) {
     @Singleton
     @Provides
     fun providesRoomDatabase(): AppDatabase {
-        db = Room.databaseBuilder(pizzaApp, AppDatabase::class.java, "library_database")
+        db = Room.databaseBuilder(pizzaApp, AppDatabase::class.java, "pizza_database")
             .fallbackToDestructiveMigration()
+            .allowMainThreadQueries()
             .build()
         return db
     }

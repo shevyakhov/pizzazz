@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
 import repository.PizzaRepository
 
-class PizzaModel(repository: PizzaRepository) : ViewModel() {
+class PizzaModel(var repository: PizzaRepository) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     private var pizzaList = ArrayList<PizzaEntity>()
     private lateinit var pizzaApi: PizzaApi
@@ -34,8 +34,9 @@ class PizzaModel(repository: PizzaRepository) : ViewModel() {
         cartData = cart
         observableCart.onNext(cartData)
     }
-    fun getPizzaWeb(item: PizzaEntity) {
+    private fun getPizzaWeb(item: PizzaEntity) {
         var list = ArrayList<PizzaEntity>()
+
         list = pizzaList
         list.add(item)
         pizzaList = list
@@ -55,14 +56,19 @@ class PizzaModel(repository: PizzaRepository) : ViewModel() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe({
                     for (i in it as List<PizzaEntity> ){
-                        getPizzaWeb(i)
+                        repository.insertPizza(i)
                     }
                 }, {
                     Log.e("onError", "error")
                 })
         )
+        getFromDb()
     }
-
+    fun getFromDb(){
+        for (i in repository.getAllPizza()){
+            getPizzaWeb(i)
+        }
+    }
 
     fun getPizzaList(): List<PizzaEntity> {
         return pizzaList

@@ -47,9 +47,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         PizzaApp.instance.pizzaComponent.inject(this)
         pizzaModel = ViewModelProvider(this,pizzaModelFactory)[PizzaModel::class.java]
-        getPizza()
-        bindingInit()
         subscribeOnVm()
+        bindingInit()
+        getPizza()
     }
 
     override fun onAttach(context: Context) {
