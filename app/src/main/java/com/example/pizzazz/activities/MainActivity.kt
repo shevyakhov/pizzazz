@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity(), OnFragmentPass {
         setTheme(R.style.SplashTheme)
         setContentView(binding.root)
         startMainFragment()
+
+
     }
 
     private fun startMainFragment() {

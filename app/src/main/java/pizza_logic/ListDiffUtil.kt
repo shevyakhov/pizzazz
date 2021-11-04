@@ -1,6 +1,7 @@
 package pizza_logic
 
 import androidx.recyclerview.widget.DiffUtil
+import database.PizzaEntity
 
 class ListDiffUtil(
     private val oldList: List<PizzaEntity>,

@@ -19,7 +19,7 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import pizza_logic.ListDiffUtil
 import pizza_logic.OnFragmentPass
-import pizza_logic.PizzaEntity
+import database.PizzaEntity
 
 
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {

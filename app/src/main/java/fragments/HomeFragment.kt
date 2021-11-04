@@ -3,7 +3,6 @@ package fragments
 import fragments.adapters.MenuAdapter
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pizzazz.R
 import com.example.pizzazz.databinding.FragmentHomeBinding
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import database.PizzaEntity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import pizza_logic.*
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.collections.ArrayList
 
 

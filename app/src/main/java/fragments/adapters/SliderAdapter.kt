@@ -8,10 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.pizzazz.R
-import fragments.DetailsFragment
 import com.example.pizzazz.databinding.SliderItemBinding
-import pizza_logic.OnFragmentPass
-import pizza_logic.PizzaEntity
 
 
 class SliderAdapter : RecyclerView.Adapter<SliderAdapter.SliderHolder>() {

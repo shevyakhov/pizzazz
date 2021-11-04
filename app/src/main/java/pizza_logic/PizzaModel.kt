@@ -2,6 +2,7 @@ package pizza_logic
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import database.PizzaEntity
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -60,7 +61,6 @@ class PizzaModel : ViewModel() {
                 })
         )
     }
-
 
 
     fun getPizzaList(): List<PizzaEntity> {
