@@ -8,8 +8,9 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
+import repository.PizzaRepository
 
-class PizzaModel : ViewModel() {
+class PizzaModel(repository: PizzaRepository) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     private var pizzaList = ArrayList<PizzaEntity>()
     private lateinit var pizzaApi: PizzaApi

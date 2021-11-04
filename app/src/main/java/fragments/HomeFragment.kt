@@ -9,13 +9,17 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pizzazz.R
+import com.example.pizzazz.activities.PizzaApp
 import com.example.pizzazz.databinding.FragmentHomeBinding
 import database.PizzaEntity
+import di.PizzaViewModelFactory
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import pizza_logic.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
@@ -25,8 +29,10 @@ class HomeFragment : Fragment() {
     private lateinit var pizzaApi: PizzaApi
     private val compositeDisposable = CompositeDisposable()
     private val menuAdapter = MenuAdapter()
-    private val pizzaModel: PizzaModel by activityViewModels()
-
+   /* private var pizzaModel: PizzaModel by activityViewModels()*/
+    private lateinit var pizzaModel: PizzaModel
+    @Inject
+    lateinit var pizzaModelFactory: PizzaViewModelFactory
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +45,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        PizzaApp.instance.pizzaComponent.inject(this)
+        pizzaModel = ViewModelProvider(this,pizzaModelFactory)[PizzaModel::class.java]
         getPizza()
         bindingInit()
         subscribeOnVm()

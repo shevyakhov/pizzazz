@@ -1,33 +1,31 @@
 package com.example.pizzazz.activities
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProvider
 import com.example.pizzazz.R
 import com.example.pizzazz.databinding.ActivityMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import fragments.DetailsFragment
+import di.PizzaViewModelFactory
 import fragments.HomeFragment
-import io.reactivex.rxjava3.core.Single
 import pizza_logic.OnFragmentPass
-import pizza_logic.PizzaApi
-import pizza_logic.*
-import retrofit2.Call
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
+import pizza_logic.PizzaModel
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), OnFragmentPass {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var model: PizzaModel
+
+
+    @Inject lateinit var pizzaModelFactory: PizzaViewModelFactory
+    private val model:PizzaModel by viewModels {pizzaModelFactory  }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
-        model = ViewModelProvider(this)[PizzaModel::class.java]
+        PizzaApp.instance.pizzaComponent.inject(this)
         setTheme(R.style.SplashTheme)
         setContentView(binding.root)
         startMainFragment()
@@ -50,7 +48,7 @@ class MainActivity : AppCompatActivity(), OnFragmentPass {
     }
 
     override fun onDataPass(item: Int) {
-        model.addPizza(item)
+       model.addPizza(item)
     }
 
     override fun onDialog(fragment: BottomSheetDialogFragment) {
