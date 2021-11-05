@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager
 import pizza_logic.ListDiffUtil
 import pizza_logic.OnFragmentPass
 import database.PizzaEntity
+import java.lang.Exception
 
 
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
@@ -52,9 +53,12 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
     override fun onBindViewHolder(holder: MenuHolder, position: Int) {
         holder.bind(menuList[position])
         holder.itemView.setOnClickListener {
-
-            /*fragmentPasser.onDataPass(position)*/
-            fragmentPasser.onDialog(DetailsFragment.newInstance(menuList[position].id))
+            val id:Int = try {
+                menuList[position].id
+            } catch (e:Exception){
+                fullMenuList[position].id
+            }
+            fragmentPasser.onDialog(DetailsFragment.newInstance(id))
             hideKeyboard(holder.context)
         }
     }
@@ -109,6 +113,10 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
         // check if no view has focus:
         val v = (ctx as Activity).currentFocus ?: return
         inputManager.hideSoftInputFromWindow(v.windowToken, 0)
+    }
+    fun sendById(position: Int){
+       for (i in fullMenuList.indices)
+        fullMenuList
     }
 
 }
