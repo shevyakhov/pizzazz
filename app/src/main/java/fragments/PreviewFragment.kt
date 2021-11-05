@@ -79,8 +79,6 @@ class PreviewFragment : Fragment() {
     private fun initBinding() {
         val itemId = arguments?.getInt("pizzaId") as Int
         val pizza = homeViewModel.getPizzaById(itemId)
-
-        Log.e("urls",pizza.imageUrls.toString())
         sliderAdapter.initList(pizza.imageUrls)
         binding.viewPager.adapter = sliderAdapter
 

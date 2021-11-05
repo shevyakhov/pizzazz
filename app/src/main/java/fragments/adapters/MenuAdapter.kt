@@ -68,7 +68,6 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
     }
 
     fun addPizza(e: PizzaEntity) {
-        Log.e("",e.toString())
         menuList.add(e.id - 1, e)
         fullMenuList.add(e.id - 1, e)
     }

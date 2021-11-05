@@ -4,15 +4,15 @@
     android:layout_height="match_parent"
     tools:context="fragments.CartFragment"
     android:clickable="true"
-    android:background="@color/design_default_color_secondary"
+    android:background="@color/white"
     android:focusable="true">
 
     <TextView
-
-        android:layout_gravity="center"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:text="CART" />
+        android:layout_gravity="start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/appPrimaryStyle"
+         />
 
     <Button
         android:id="@+id/cartBtn"

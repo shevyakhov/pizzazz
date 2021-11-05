@@ -78,7 +78,6 @@ class DetailsFragment : BottomSheetDialogFragment() {
         binding.btnToCart.text = "$price ₽"
 
         binding.btnToCart.setOnClickListener {
-           /* homeViewModel.addToCart(pizza)*/
             cartModel.addToCart(pizza)
             dismiss()
         }

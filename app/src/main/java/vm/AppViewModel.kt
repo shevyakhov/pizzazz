@@ -28,7 +28,6 @@ class AppViewModel(var repository: PizzaRepository) : ViewModel() {
         list = pizzaList
         list.add(item)
         pizzaList = list
-        Log.e("list",list.toString())
         observablePizzaList.onNext(pizzaList)
 
     }
