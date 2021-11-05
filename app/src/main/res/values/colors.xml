@@ -11,4 +11,5 @@
     <color name="appGrey">#424242</color>
     <color name="transparentGrey">#80424242</color>
     <color name="mainGrey">#E5E5E5</color>
+    <color name="barelyGrey">#1AC4C4C4</color>
 </resources>

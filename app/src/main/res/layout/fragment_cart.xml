@@ -1,27 +1,72 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragments.CartFragment"
-    android:clickable="true"
     android:background="@color/white"
-    android:focusable="true">
+    android:clickable="true"
+    android:focusable="true"
+    tools:context="fragments.CartFragment">
 
-    <TextView
-        android:layout_gravity="start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/appPrimaryStyle"
-         />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                style="@style/appPrimaryStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/cart" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_trashcan"
+
+                />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cartList"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_above="@+id/cartBtn"
+        android:layout_below="@+id/topPanel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="20dp" />
 
     <Button
         android:id="@+id/cartBtn"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/cardview_dark_background"
-        android:text="to end fragment"
-        android:layout_marginTop="100dp"
-        />
+        style="@style/buttonYellow"
+        android:layout_width="310dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="20dp"
+        android:drawableLeft="@drawable/checkout_text"
+        android:textAlignment="textEnd"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:backgroundTint="@null"
+        tools:ignore="RtlCompat"
+        tools:text="price" />
 
-</FrameLayout>
+</RelativeLayout>
