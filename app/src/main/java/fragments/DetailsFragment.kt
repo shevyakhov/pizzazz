@@ -8,20 +8,40 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.pizzazz.activities.PizzaApp
 import com.example.pizzazz.databinding.FragmentDetailsBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import di.PizzaViewModelFactory
 import pizza_logic.OnFragmentPass
-import pizza_logic.PizzaModel
+import vm.AppViewModel
+import vm.CartViewModel
+import javax.inject.Inject
 
 class DetailsFragment : BottomSheetDialogFragment() {
     private lateinit var fragmentPasser: OnFragmentPass
     private lateinit var binding: FragmentDetailsBinding
-    private val pizzaModel: PizzaModel by activityViewModels()
+    /*TODO*/
+    private lateinit var homeViewModel: AppViewModel
+    @Inject
+    lateinit var pizzaModelFactory: PizzaViewModelFactory
+
+    private val cartModel: CartViewModel by activityViewModels()
+
+    companion object{
+        @JvmStatic
+        fun newInstance(id: Int) = DetailsFragment().apply {
+            arguments = Bundle().apply {
+                putInt("pizzaId", id)
+            }
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,14 +50,19 @@ class DetailsFragment : BottomSheetDialogFragment() {
         binding = FragmentDetailsBinding.inflate(inflater)
         return binding.root
     }
-    /*TODO STICKY BUTTON*/
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val itemId = pizzaModel.getPizzaData()
-        val pizza = pizzaModel.getPizzaList()[itemId]
+
+        PizzaApp.instance.pizzaComponent.inject(this)
+        homeViewModel = ViewModelProvider(this,pizzaModelFactory)[AppViewModel::class.java]
+
+
+        val itemId = arguments?.getInt("pizzaId") as Int
+        val pizza = homeViewModel.getPizzaById(itemId)
 
         binding.bottomImage.setOnClickListener {
-            fragmentPasser.onFragmentPass(PreviewFragment())
+            fragmentPasser.onFragmentPass(PreviewFragment.newInstance(itemId))
             dismiss()
         }
         context?.let {
@@ -51,8 +76,10 @@ class DetailsFragment : BottomSheetDialogFragment() {
         binding.PizzaName.text = pizza.name
         val price = pizza.price.toInt()
         binding.btnToCart.text = "$price ₽"
+
         binding.btnToCart.setOnClickListener {
-            pizzaModel.addToCart(pizza)
+           /* homeViewModel.addToCart(pizza)*/
+            cartModel.addToCart(pizza)
             dismiss()
         }
 

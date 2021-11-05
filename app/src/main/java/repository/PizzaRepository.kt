@@ -12,8 +12,7 @@ class PizzaRepository(db: AppDatabase) {
         dao.insertPizza(item)
 
     }
-
-    fun deleteBook(item: PizzaEntity) {
+    fun deletePizza(item: PizzaEntity) {
        dao.delete(item)
     }
     fun getPizzaById(id: Int): PizzaEntity {

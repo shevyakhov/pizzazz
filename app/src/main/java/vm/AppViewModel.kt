@@ -1,4 +1,4 @@
-package pizza_logic
+package vm
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -8,18 +8,20 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.reactivex.rxjava3.subjects.Subject
+import pizza_logic.PizzaApi
 import repository.PizzaRepository
 
-class PizzaModel(var repository: PizzaRepository) : ViewModel() {
+class AppViewModel(var repository: PizzaRepository) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
-    private var pizzaList = ArrayList<PizzaEntity>()
+     var pizzaList = ArrayList<PizzaEntity>()
     private lateinit var pizzaApi: PizzaApi
     private var pizzaId:Int = 0
     private var cartData = ArrayList<PizzaEntity>()
-    private fun Pizza(): PizzaEntity {
+    private fun pizza(): PizzaEntity {
         return PizzaEntity(-1, "", 0.0, listOf(""), "")
     }
 
+/* TODO probably new inject*/
 
     val observableCart: Subject<ArrayList<PizzaEntity>> = PublishSubject.create()
     val observablePizzaList: Subject<ArrayList<PizzaEntity>> = PublishSubject.create()
@@ -28,19 +30,23 @@ class PizzaModel(var repository: PizzaRepository) : ViewModel() {
     }
 
     fun addToCart(item: PizzaEntity) {
+        Log.e("cartdata",cartData.toString())
         var cart = ArrayList<PizzaEntity>()
         cart = cartData
         cart.add(item)
         cartData = cart
+        Log.e("cartdata",cartData.toString())
         observableCart.onNext(cartData)
+
     }
     private fun getPizzaWeb(item: PizzaEntity) {
         var list = ArrayList<PizzaEntity>()
-
         list = pizzaList
         list.add(item)
         pizzaList = list
+        Log.e("list",list.toString())
         observablePizzaList.onNext(pizzaList)
+
     }
 
     fun getPizzaData(): Int {
@@ -64,13 +70,17 @@ class PizzaModel(var repository: PizzaRepository) : ViewModel() {
         )
         getFromDb()
     }
-    fun getFromDb(){
+    private fun getFromDb(){
         for (i in repository.getAllPizza()){
             getPizzaWeb(i)
         }
     }
 
-    fun getPizzaList(): List<PizzaEntity> {
-        return pizzaList
+    fun getPizzaById(id:Int): PizzaEntity {
+        return repository.getPizzaById(id)
     }
+
+    /*fun getPizzaList(): List<PizzaEntity> {
+        return pizzaList
+    }*/
 }

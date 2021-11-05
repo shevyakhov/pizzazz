@@ -2,7 +2,7 @@ package di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import pizza_logic.PizzaModel
+import vm.AppViewModel
 import repository.PizzaRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -11,6 +11,7 @@ import javax.inject.Singleton
 class PizzaViewModelFactory @Inject constructor(private var repository: PizzaRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return PizzaModel(repository) as T
+        return AppViewModel(repository) as T
     }
+
 }

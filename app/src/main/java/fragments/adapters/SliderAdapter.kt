@@ -12,7 +12,7 @@ import com.example.pizzazz.databinding.SliderItemBinding
 
 
 class SliderAdapter : RecyclerView.Adapter<SliderAdapter.SliderHolder>() {
-    private var imageList = ArrayList<String>()
+    private var imageList = listOf<String>()
 
     class SliderHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val binding = SliderItemBinding.bind(v)
@@ -39,7 +39,7 @@ class SliderAdapter : RecyclerView.Adapter<SliderAdapter.SliderHolder>() {
         return imageList.size
     }
 
-    fun initList(list:ArrayList<String>){
+    fun initList(list: List<String>){
         imageList = list
     }
 

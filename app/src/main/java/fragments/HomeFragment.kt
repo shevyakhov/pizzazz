@@ -19,6 +19,8 @@ import database.PizzaEntity
 import di.PizzaViewModelFactory
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import pizza_logic.*
+import vm.AppViewModel
+import vm.CartViewModel
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -26,11 +28,12 @@ import kotlin.collections.ArrayList
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var fragmentPasser: OnFragmentPass
-    private lateinit var pizzaApi: PizzaApi
-    private val compositeDisposable = CompositeDisposable()
+
     private val menuAdapter = MenuAdapter()
-   /* private var pizzaModel: PizzaModel by activityViewModels()*/
-    private lateinit var pizzaModel: PizzaModel
+    private lateinit var homeViewModel: AppViewModel
+
+    private val cartModel: CartViewModel by activityViewModels()
+
     @Inject
     lateinit var pizzaModelFactory: PizzaViewModelFactory
     override fun onCreateView(
@@ -46,7 +49,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         PizzaApp.instance.pizzaComponent.inject(this)
-        pizzaModel = ViewModelProvider(this,pizzaModelFactory)[PizzaModel::class.java]
+        homeViewModel = ViewModelProvider(this, pizzaModelFactory)[AppViewModel::class.java]
         subscribeOnVm()
         bindingInit()
         getPizza()
@@ -61,7 +64,7 @@ class HomeFragment : Fragment() {
     private fun getPizza() {
         val retrofit = RetrofitInstance(getString(R.string.baseUrl))
         retrofit.configureRetrofit()
-        pizzaModel.getPizza(retrofit.pizzaApi)
+        homeViewModel.getPizza(retrofit.pizzaApi)
 
     }
 
@@ -95,13 +98,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun subscribeOnVm() {
-        pizzaModel.observableCart.subscribe {
-            if (it != null) {
-                changeCartBtn(it)
-            }
+       /* homeViewModel.observableCart.subscribe {
+            changeCartBtn(it)
+        }*/
+
+        cartModel.observableCart.subscribe {
+            changeCartBtn(it)
         }
 
-        pizzaModel.observablePizzaList.subscribe {
+        homeViewModel.observablePizzaList.subscribe {
             menuAdapter.addPizza(it.last())
             menuAdapter.notifyItemChanged(menuAdapter.itemCount - 1)
         }
@@ -122,11 +127,6 @@ class HomeFragment : Fragment() {
             binding.checkout.text = ""
             binding.checkout.visibility = View.INVISIBLE
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.clear()
     }
 
 }

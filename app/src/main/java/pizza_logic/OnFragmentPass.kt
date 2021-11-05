@@ -6,7 +6,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 interface OnFragmentPass {
     fun onFragmentPass(fragment: Fragment)
     fun onDataDelete()
-    /*fun onDataPass(item: PizzaEntity)*/
     fun onDataPass(item: Int)
     fun onDialog(fragment: BottomSheetDialogFragment)
     fun onPopBackStack()

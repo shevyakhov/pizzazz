@@ -8,5 +8,4 @@ interface PizzaApi {
     @GET("./pizza")
     fun retrievePizzas(): Single<List<PizzaEntity>>
 
-    /*fun getDataFromDb(): database.PizzaDao*/
 }

@@ -11,7 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import di.PizzaViewModelFactory
 import fragments.HomeFragment
 import pizza_logic.OnFragmentPass
-import pizza_logic.PizzaModel
+import vm.AppViewModel
 import javax.inject.Inject
 
 
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), OnFragmentPass {
 
 
     @Inject lateinit var pizzaModelFactory: PizzaViewModelFactory
-    private val model:PizzaModel by viewModels {pizzaModelFactory  }
+    private val model: AppViewModel by viewModels {pizzaModelFactory  }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
