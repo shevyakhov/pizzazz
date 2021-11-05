@@ -16,29 +16,13 @@ class AppViewModel(var repository: PizzaRepository) : ViewModel() {
      var pizzaList = ArrayList<PizzaEntity>()
     private lateinit var pizzaApi: PizzaApi
     private var pizzaId:Int = 0
-    private var cartData = ArrayList<PizzaEntity>()
-    private fun pizza(): PizzaEntity {
-        return PizzaEntity(-1, "", 0.0, listOf(""), "")
-    }
 
-/* TODO probably new inject*/
 
-    val observableCart: Subject<ArrayList<PizzaEntity>> = PublishSubject.create()
     val observablePizzaList: Subject<ArrayList<PizzaEntity>> = PublishSubject.create()
     fun addPizza(item: Int) {
         pizzaId = item
     }
 
-    fun addToCart(item: PizzaEntity) {
-        Log.e("cartdata",cartData.toString())
-        var cart = ArrayList<PizzaEntity>()
-        cart = cartData
-        cart.add(item)
-        cartData = cart
-        Log.e("cartdata",cartData.toString())
-        observableCart.onNext(cartData)
-
-    }
     private fun getPizzaWeb(item: PizzaEntity) {
         var list = ArrayList<PizzaEntity>()
         list = pizzaList
@@ -47,10 +31,6 @@ class AppViewModel(var repository: PizzaRepository) : ViewModel() {
         Log.e("list",list.toString())
         observablePizzaList.onNext(pizzaList)
 
-    }
-
-    fun getPizzaData(): Int {
-        return pizzaId
     }
 
     fun getPizza(retrofit: PizzaApi) {
@@ -80,7 +60,4 @@ class AppViewModel(var repository: PizzaRepository) : ViewModel() {
         return repository.getPizzaById(id)
     }
 
-    /*fun getPizzaList(): List<PizzaEntity> {
-        return pizzaList
-    }*/
 }

@@ -26,7 +26,7 @@ import javax.inject.Inject
 class DetailsFragment : BottomSheetDialogFragment() {
     private lateinit var fragmentPasser: OnFragmentPass
     private lateinit var binding: FragmentDetailsBinding
-    /*TODO*/
+
     private lateinit var homeViewModel: AppViewModel
     @Inject
     lateinit var pizzaModelFactory: PizzaViewModelFactory
