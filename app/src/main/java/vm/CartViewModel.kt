@@ -8,15 +8,38 @@ import io.reactivex.rxjava3.subjects.Subject
 
 class CartViewModel : ViewModel() {
     private var cartData = ArrayList<PizzaEntity>()
-    val observableCart: Subject<ArrayList<PizzaEntity>> = PublishSubject.create()
+    /*val observableCart: Subject<ArrayList<PizzaEntity>> = PublishSubject.create()*/
+    val observableCart: Subject<HashMap<PizzaEntity,Int>> = PublishSubject.create()
+
+    val cartMap = HashMap<PizzaEntity,Int>()
 
     fun addToCart(item: PizzaEntity) {
-        Log.e("cartdata",cartData.toString())
+        if (cartMap.containsKey(item)) {
+            cartMap.get(item)?.plus(1)?.let { cartMap.put(item, it) }
+        } else
+        {
+            cartMap.put(item,1)
+        }
+        observableCart.onNext(cartMap)
+    }
+
+    fun getCart(): ArrayList<PizzaEntity> {
         var cart = ArrayList<PizzaEntity>()
-        cart = cartData
-        cart.add(item)
-        cartData = cart
-        Log.e("cartdata",cartData.toString())
-        observableCart.onNext(cartData)
+        for (i in cartMap.keys){
+            cart.add(i)
+        }
+        return cart
+    }
+
+    @JvmName("getCartMap1")
+    fun getCartMap(): HashMap<PizzaEntity, Int> {
+        return cartMap
+    }
+
+    fun deleteAll(){
+        cartData.clear()
+        observableCart.onNext(cartMap)
+
+        cartMap.clear()
     }
 }

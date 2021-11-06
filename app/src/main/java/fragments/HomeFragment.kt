@@ -17,12 +17,10 @@ import com.example.pizzazz.activities.PizzaApp
 import com.example.pizzazz.databinding.FragmentHomeBinding
 import database.PizzaEntity
 import di.PizzaViewModelFactory
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import pizza_logic.*
 import vm.AppViewModel
 import vm.CartViewModel
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment() {
@@ -97,9 +95,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun subscribeOnVm() {
-       /* homeViewModel.observableCart.subscribe {
-            changeCartBtn(it)
-        }*/
 
         cartModel.observableCart.subscribe {
             changeCartBtn(it)
@@ -113,10 +108,11 @@ class HomeFragment : Fragment() {
     }
 
 
-    private fun changeCartBtn(cart: ArrayList<PizzaEntity>) {
+    private fun changeCartBtn(cart: HashMap<PizzaEntity, Int>) {
         var sum = 0.0
-        for (i in cart.indices) {
-            sum += cart[i].price
+
+        for ((key, value) in cart) {
+            sum+= (key.price * value)
         }
         val total = sum.toInt()
         if (total > 0) {
