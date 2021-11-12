@@ -45,7 +45,6 @@ class CartFragment : Fragment() {
         binding.deleteBtn.setOnClickListener {
             cartModel.deleteAll()
             cartAdapter.deleteAll()
-
         }
 
          cartModel.observableCart.subscribe {

@@ -42,14 +42,14 @@ class AppViewModel(var repository: PizzaRepository) : ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread()).subscribe({
                     for (i in it as List<PizzaEntity> ){
                         repository.insertPizza(i)
+                        getPizzaWeb(i)
                     }
                 }, {
                     Log.e("onError", "error")
                 })
         )
-        getFromDb()
     }
-    private fun getFromDb(){
+    fun getFromDb(){
         for (i in repository.getAllPizza()){
             getPizzaWeb(i)
         }
