@@ -3,6 +3,7 @@ package database
 import androidx.room.TypeConverter
 
 class ListConverter {
+    /* Turn List of Strings into combined string where elements divided by "|" */
     @TypeConverter
     fun fromListToOne(value :List<String>): String {
         var string = ""

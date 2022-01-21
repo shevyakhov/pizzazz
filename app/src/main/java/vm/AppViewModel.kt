@@ -13,9 +13,9 @@ import repository.PizzaRepository
 
 class AppViewModel(var repository: PizzaRepository) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
-     var pizzaList = ArrayList<PizzaEntity>()
+    var pizzaList = ArrayList<PizzaEntity>()
     private lateinit var pizzaApi: PizzaApi
-    private var pizzaId:Int = 0
+    private var pizzaId: Int = 0
 
 
     val observablePizzaList: Subject<ArrayList<PizzaEntity>> = PublishSubject.create()
@@ -23,16 +23,15 @@ class AppViewModel(var repository: PizzaRepository) : ViewModel() {
         pizzaId = item
     }
 
-    private fun getPizzaWeb(item: PizzaEntity) {
-        var list = ArrayList<PizzaEntity>()
-        list = pizzaList
+    private fun passDataToObservable(item: PizzaEntity) {
+        var list: ArrayList<PizzaEntity> = pizzaList
         list.add(item)
         pizzaList = list
         observablePizzaList.onNext(pizzaList)
 
     }
 
-    fun getPizza(retrofit: PizzaApi) {
+    fun getPizzaWithRetrofit(retrofit: PizzaApi) {
 
         pizzaApi = retrofit
         compositeDisposable.add(
@@ -40,22 +39,23 @@ class AppViewModel(var repository: PizzaRepository) : ViewModel() {
                 .toObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe({
-                    for (i in it as List<PizzaEntity> ){
+                    for (i in it as List<PizzaEntity>) {
                         repository.insertPizza(i)
-                        getPizzaWeb(i)
+                        passDataToObservable(i)
                     }
                 }, {
                     Log.e("onError", "error")
                 })
         )
     }
-    fun getFromDb(){
-        for (i in repository.getAllPizza()){
-            getPizzaWeb(i)
+
+    fun getFromDb() {
+        for (i in repository.getAllPizza()) {
+            passDataToObservable(i)
         }
     }
 
-    fun getPizzaById(id:Int): PizzaEntity {
+    fun getPizzaById(id: Int): PizzaEntity {
         return repository.getPizzaById(id)
     }
 

@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pizzazz.databinding.FragmentCartBinding
 import database.PizzaEntity
 import fragments.adapters.CartAdapter
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import pizza_logic.OnFragmentPass
 import vm.CartViewModel
 
@@ -21,10 +23,7 @@ class CartFragment : Fragment() {
     private lateinit var binding: FragmentCartBinding
     private val cartAdapter = CartAdapter()
 
-    /**
-    * Not finished just testing layout
-    *
-    * */
+
     private val cartModel: CartViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,20 +36,22 @@ class CartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        subscribeOnAdapter()
         bindingInit()
         binding.checkout.setOnClickListener {
-           passFragment(EndFragment())
+            passFragment(EndFragment())
         }
         binding.deleteBtn.setOnClickListener {
-            cartModel.deleteAll()
+            cartModel.deleteAllHashMapData()
             cartAdapter.deleteAll()
+            changeCartBtn(cartModel.getCartMap())
         }
 
-         cartModel.observableCart.subscribe {
+        cartModel.observableCart.subscribe {
             changeCartBtn(it)
         }
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         fragmentPasser = context as OnFragmentPass
@@ -63,11 +64,13 @@ class CartFragment : Fragment() {
                 LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             cartList.adapter = cartAdapter
         }
-        cartAdapter.passMap(cartModel.getCartMap())
-       addPizza(cartModel.getCart())
-       changeCartBtn(cartModel.getCartMap())
+
+        cartAdapter.changeMap(cartModel.getCartMap()) /* pass basic map to adapter*/
+        addPizza(cartModel.getCartArrayList())                  /* pass List to adapter*/
+        changeCartBtn(cartModel.getCartMap())
 
     }
+
     private fun passFragment(frag: Fragment) {
         fragmentPasser.onFragmentPass(frag)
     }
@@ -77,12 +80,13 @@ class CartFragment : Fragment() {
             cartAdapter.addPizza(i)
         }
     }
-
+    /* basically change Total sum of order */
     private fun changeCartBtn(cart: HashMap<PizzaEntity, Int>) {
+
         var sum = 0.0
 
         for ((key, value) in cart) {
-            sum+= (key.price * value)
+            sum += (key.price * value)
         }
         val total = sum.toInt()
         if (total > 0) {
@@ -92,5 +96,18 @@ class CartFragment : Fragment() {
             binding.checkout.text = ""
             binding.checkout.visibility = View.INVISIBLE
         }
+
+    }
+
+    private fun subscribeOnAdapter() {
+
+        cartAdapter.flag.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({ response ->
+                cartModel.passNewHashMap(response) /* pass new map to VM*/
+                changeCartBtn(response)
+                cartAdapter.changeMap(response) /* pass same map back to adapter to rebuild*/
+                cartAdapter.updateIfMapChanged()
+            }, {throwable -> Log.e("err", throwable.message.toString())})
+
     }
 }

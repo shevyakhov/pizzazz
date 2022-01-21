@@ -1,8 +1,11 @@
 package fragments.adapters
 
+import android.app.Activity
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
@@ -12,15 +15,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.pizzazz.R
 import com.example.pizzazz.databinding.MenuItemBinding
+import database.PizzaEntity
 import fragments.DetailsFragment
-import android.app.Activity
-import android.content.Context
-import android.util.Log
-import android.view.inputmethod.InputMethodManager
 import pizza_logic.ListDiffUtil
 import pizza_logic.OnFragmentPass
-import database.PizzaEntity
-import java.lang.Exception
 
 
 class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
@@ -53,9 +51,9 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
     override fun onBindViewHolder(holder: MenuHolder, position: Int) {
         holder.bind(menuList[position])
         holder.itemView.setOnClickListener {
-            val id:Int = try {
+            val id: Int = try {
                 menuList[position].id
-            } catch (e:Exception){
+            } catch (e: Exception) {
                 fullMenuList[position].id
             }
             fragmentPasser.onDialog(DetailsFragment.newInstance(id))
@@ -106,16 +104,13 @@ class MenuAdapter : RecyclerView.Adapter<MenuAdapter.MenuHolder>(), Filterable {
             changeDataUtil(results.values as List<PizzaEntity>)
         }
     }
+
     private fun hideKeyboard(ctx: Context) {
         val inputManager: InputMethodManager = ctx
             .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         // check if no view has focus:
         val v = (ctx as Activity).currentFocus ?: return
         inputManager.hideSoftInputFromWindow(v.windowToken, 0)
-    }
-    fun sendById(position: Int){
-       for (i in fullMenuList.indices)
-        fullMenuList
     }
 
 }

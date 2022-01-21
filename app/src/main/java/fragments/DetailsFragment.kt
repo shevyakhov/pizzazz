@@ -17,6 +17,7 @@ import com.example.pizzazz.databinding.FragmentDetailsBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import database.PizzaEntity
 import di.PizzaViewModelFactory
 import pizza_logic.OnFragmentPass
 import vm.AppViewModel
@@ -28,12 +29,13 @@ class DetailsFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentDetailsBinding
 
     private lateinit var homeViewModel: AppViewModel
+
     @Inject
     lateinit var pizzaModelFactory: PizzaViewModelFactory
 
     private val cartModel: CartViewModel by activityViewModels()
 
-    companion object{
+    companion object {
         @JvmStatic
         fun newInstance(id: Int) = DetailsFragment().apply {
             arguments = Bundle().apply {
@@ -54,10 +56,11 @@ class DetailsFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /* inject ViewModel */
         PizzaApp.instance.pizzaComponent.inject(this)
-        homeViewModel = ViewModelProvider(this,pizzaModelFactory)[AppViewModel::class.java]
+        homeViewModel = ViewModelProvider(this, pizzaModelFactory)[AppViewModel::class.java]
 
-
+        /*get pizza from fragment arguments*/
         val itemId = arguments?.getInt("pizzaId") as Int
         val pizza = homeViewModel.getPizzaById(itemId)
 
@@ -65,6 +68,12 @@ class DetailsFragment : BottomSheetDialogFragment() {
             fragmentPasser.onFragmentPass(PreviewFragment.newInstance(itemId))
             dismiss()
         }
+
+        changeLayout(pizza)
+
+    }
+
+    private fun changeLayout(pizza: PizzaEntity) {
         context?.let {
             Glide
                 .with(it)
@@ -81,8 +90,6 @@ class DetailsFragment : BottomSheetDialogFragment() {
             cartModel.addToCart(pizza)
             dismiss()
         }
-
-
     }
 
     override fun onAttach(context: Context) {
@@ -102,5 +109,6 @@ class DetailsFragment : BottomSheetDialogFragment() {
         }
         return bottomSheetDialog
     }
+
 }
 

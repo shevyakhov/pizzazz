@@ -1,9 +1,7 @@
 package fragments
 
-import fragments.adapters.MenuAdapter
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +16,9 @@ import com.example.pizzazz.activities.PizzaApp
 import com.example.pizzazz.databinding.FragmentHomeBinding
 import database.PizzaEntity
 import di.PizzaViewModelFactory
-import pizza_logic.*
+import fragments.adapters.MenuAdapter
+import pizza_logic.OnFragmentPass
+import pizza_logic.RetrofitInstance
 import vm.AppViewModel
 import vm.CartViewModel
 import javax.inject.Inject
@@ -64,7 +64,7 @@ class HomeFragment : Fragment() {
         val retrofit = RetrofitInstance(getString(R.string.baseUrl))
         retrofit.configureRetrofit()
         homeViewModel.getFromDb()
-        homeViewModel.getPizza(retrofit.pizzaApi)
+        homeViewModel.getPizzaWithRetrofit(retrofit.pizzaApi)
     }
 
     private fun bindingInit() {
@@ -98,7 +98,6 @@ class HomeFragment : Fragment() {
     private fun subscribeOnVm() {
 
         cartModel.observableCart.subscribe {
-            Log.e("y",it.toString())
             changeCartBtn(it)
         }
 
