@@ -3,6 +3,7 @@ package di
 import android.app.Activity
 import dagger.Component
 import fragments.DetailsFragment
+import fragments.EndFragment
 import fragments.HomeFragment
 import fragments.PreviewFragment
 import javax.inject.Singleton
@@ -14,4 +15,5 @@ interface AppComponent {
     fun inject(fragment: HomeFragment)
     fun inject(fragment: PreviewFragment)
     fun inject(fragment: DetailsFragment)
+    fun inject(fragment: EndFragment)
 }
