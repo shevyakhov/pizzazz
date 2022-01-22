@@ -26,6 +26,7 @@ class EndFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.orderSentBtn.setOnClickListener {
             deleteFragment()
+
         }
     }
     override fun onAttach(context: Context) {
