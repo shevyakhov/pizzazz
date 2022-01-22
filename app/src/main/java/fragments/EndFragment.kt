@@ -2,6 +2,8 @@ package fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -51,6 +53,7 @@ class EndFragment : Fragment() {
             retrofit.pizzaApi,
             cartModel.getCartMap()
         )
+
     }
 
     override fun onAttach(context: Context) {
@@ -63,6 +66,20 @@ class EndFragment : Fragment() {
     }
 
     private fun deleteFragment() {
+        cartModel.deleteAllHashMapData()
         fragmentPasser.onDataDelete()
+    }
+    override fun onResume() {
+        super.onResume()
+        requireView().isFocusableInTouchMode = true
+        requireView().requestFocus()
+        requireView().setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                fragmentPasser.onDataDelete()
+                cartModel.deleteAllHashMapData()
+                return@OnKeyListener true
+            }
+            false
+        })
     }
 }
